@@ -1,0 +1,63 @@
+\hypertarget{packet_8h_source}{}\doxysection{packet.\+h}
+\mbox{\hyperlink{packet_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef PACKET\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define PACKET\_H}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <stddef.h>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define PACKET\_SIZE 256}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define CHARSIZE 1}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define INT16SIZE 2}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define INT32SIZE 4}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define INT64SIZE 8}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define FLOATSIZE 4}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#define DOUBLESIZE 8}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} serverpackets\_enum}
+\DoxyCodeLine{21 \{}
+\DoxyCodeLine{22     SPAWN\_PLAYER = 0}
+\DoxyCodeLine{23 \} serverpackets\_e;}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} clientpackets\_enum}
+\DoxyCodeLine{26 \{   }
+\DoxyCodeLine{27     SPAWN\_PLAYER\_RECEIVED = 0}
+\DoxyCodeLine{28 \} clientpackets\_e;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{structpacket__struct}{packet\_struct}}}
+\DoxyCodeLine{31 \{   }
+\DoxyCodeLine{32     \textcolor{keywordtype}{size\_t} size;}
+\DoxyCodeLine{33     \textcolor{keywordtype}{int} read\_head;}
+\DoxyCodeLine{34     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} buffer[PACKET\_SIZE];}
+\DoxyCodeLine{35 \} \mbox{\hyperlink{structpacket__struct}{packet\_t}};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \mbox{\hyperlink{structpacket__struct}{packet\_t}}* \mbox{\hyperlink{packet_8h_af9c87533a66fd7262beae033419cf02a}{create\_packet}}();}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{comment}{//}}
+\DoxyCodeLine{40 \textcolor{comment}{// Write functions}}
+\DoxyCodeLine{41 \textcolor{comment}{//}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_ac2b4be295a0700438ea09857b83cf4ae}{write\_byte}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, \textcolor{keywordtype}{char} value);}
+\DoxyCodeLine{44 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_a1770099aa4b444ef81deffbf21e5d2bf}{write\_int16}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, int16\_t value);}
+\DoxyCodeLine{45 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_a22d1bbf05be256eb7d5085ad9194285a}{write\_int32}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, int32\_t value);}
+\DoxyCodeLine{46 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_a86603430fd5a0c32dd5fa38315847f7b}{write\_int64}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, int64\_t value);}
+\DoxyCodeLine{47 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_aa3cd102e50fd91ed72ae4fcabecece3e}{write\_float}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, \textcolor{keywordtype}{float} value);}
+\DoxyCodeLine{48 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_a8d020d19e72ff0dc7de27478b33a2ef3}{write\_double}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, \textcolor{keywordtype}{double} value);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{comment}{//}}
+\DoxyCodeLine{51 \textcolor{comment}{// Read functions}}
+\DoxyCodeLine{52 \textcolor{comment}{//}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_a11b4d5d00a22b5d4dbeff55b3b419911}{read\_byte}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, \textcolor{keywordtype}{char} *dest);}
+\DoxyCodeLine{55 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_aabab5f191f43074a0bc9071736fdeacb}{read\_int16}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, int16\_t *dest);}
+\DoxyCodeLine{56 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_a21e5a21c4fbcbeb2d450dc371bd91bb1}{read\_int32}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, int32\_t *dest);}
+\DoxyCodeLine{57 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_acb36a0202645ae8f675d6cd5fba4fc77}{read\_int64}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, int64\_t *dest);}
+\DoxyCodeLine{58 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_a0a54a2374f23563eecd1916f4e9dd776}{read\_float}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, \textcolor{keywordtype}{float} *dest);}
+\DoxyCodeLine{59 \textcolor{keywordtype}{int} \mbox{\hyperlink{packet_8h_a9870f3ee21af976a242a6ff3490ca752}{read\_double}}(\mbox{\hyperlink{structpacket__struct}{packet\_t}} *packet, \textcolor{keywordtype}{double} *dest);}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{62 }
+
+\end{DoxyCode}
