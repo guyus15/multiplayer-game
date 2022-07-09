@@ -50,5 +50,13 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Documentation Files
 docs/
+
+# Executable Tests
 tests/bin
+
+# Everything But C Files
+src/*
+!src/*.c
