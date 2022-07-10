@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <packet.h>
 
 #define BACKLOG 10
 
@@ -73,6 +74,8 @@ int main(int argc, char *argv[])
 
     printf("Server: Listening for connections...\n");
 
+    packet_t *packet = create_packet();
+
     while (1)
     {
         peer_addr_len = sizeof(peer_addr);
@@ -83,12 +86,34 @@ int main(int argc, char *argv[])
             perror("accept");
             continue;
         }
-        
+
         char buffer[INET6_ADDRSTRLEN];
         get_ip_string((struct sockaddr *)&peer_addr, buffer, INET6_ADDRSTRLEN);
 
         printf("Server: Received connection from %s\n", buffer);
+
+        if ((recv(newsockfd, (void *)packet, sizeof(packet_t), 0)) == -1)
+        {
+            perror("recv");
+            continue;
+        }
+
+        close(newsockfd);
+
+        break;
     }
+
+    printf("Received packet.\n");
+
+    char packet_buffer[PACKET_SIZE];
+    memset(packet_buffer, 0, sizeof(packet_buffer));
+
+    for (int i = 0; i < 6; i++)
+    {
+        read_byte(packet, &(packet_buffer[i]));
+    }
+
+    printf("Packet buffer contents: %s\n", packet_buffer);
 
     return 0;
 }
