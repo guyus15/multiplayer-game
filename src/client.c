@@ -1,0 +1,85 @@
+#include <packet.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[])
+{
+    if (argc != 3)
+    {
+        fprintf(stderr, "Usage: %s <address> <port>\n", argv[0]);
+        exit(0);
+    }
+
+    int status, sockfd;
+    struct addrinfo hints, *result, *rp;
+
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+
+    if ((status = getaddrinfo(argv[1], argv[2], &hints, &result)) != 0)
+    {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(status));
+        exit(EXIT_FAILURE);
+    }
+
+    for (rp = result; rp != NULL; rp = rp->ai_next)
+    {
+        sockfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+
+        if (sockfd == -1)
+        {
+            continue;
+        }
+
+        if ((connect(sockfd, (struct sockaddr *)rp->ai_addr, rp->ai_addrlen)) == -1)
+        {
+            close(sockfd);
+            perror("client connect");
+            continue;
+        }
+        
+        // If we reach here, the socket has successfully connected to the 
+        // server, so break.
+        break;
+    }
+
+    if (rp == NULL)
+    {
+        fprintf(stderr, "Client: Connection failure\n");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Connected.\n");
+
+    packet_t *packet = create_packet();
+    const char *string = "hello?";
+
+    for (int i = 0; i < 6; i++)
+    {
+        write_byte(packet, string[i]);
+    }
+
+    while (1)
+    {   
+        if ((send(sockfd, (void *)packet, sizeof(packet_t), 0)) == -1)
+        {
+            perror("send");
+            continue;
+        }
+
+        close(sockfd);
+
+        break;
+    }
+        
+    freeaddrinfo(result);
+
+    return 0;
+}
