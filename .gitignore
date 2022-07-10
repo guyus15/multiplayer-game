@@ -45,7 +45,7 @@
 # Kernel Module Compile Results
 *.mod*
 *.cmd
-.tmp_versions/
+.tmp_versions/creep richard
 modules.order
 Module.symvers
 Mkfile.old
@@ -54,9 +54,18 @@ dkms.conf
 # Documentation Files
 docs/
 
+# Executables
+bin/
+
 # Executable Tests
 tests/bin
 
 # Everything But C Files
 src/*
+!src/server
+!src/client
+src/server/*
+src/client/*
 !src/*.c
+!src/server/*.c
+!src/client/*.c
