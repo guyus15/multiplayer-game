@@ -17,7 +17,7 @@ static int packet_full(packet_t *packet, int new_size);
  *
  * @return A pointer to the allocated packet.
  */
-packet_t* create_packet(packet_type type)
+packet_t* create_packet()
 {
     packet_t *packet = (packet_t *) malloc(sizeof(packet_t));
 
@@ -25,7 +25,7 @@ packet_t* create_packet(packet_type type)
 
     memset(packet->buffer, 0, PACKET_SIZE);
     
-    packet->type = type;
+    packet->type = NONE;
     packet->size = 0;
     packet->read_head = 0;
 
@@ -35,6 +35,11 @@ packet_t* create_packet(packet_type type)
 packet_type get_packet_type(packet_t *packet)
 {
     return packet->type;
+}
+
+void set_packet_type(packet_t *packet, packet_type type)
+{
+    packet->type = type;
 }
 
 //

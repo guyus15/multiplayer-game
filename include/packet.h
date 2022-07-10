@@ -32,9 +32,10 @@ typedef struct packet_struct
     unsigned char buffer[PACKET_SIZE];
 } packet_t;
 
-packet_t* create_packet(packet_type type);
+packet_t* create_packet();
 
 packet_type get_packet_type(packet_t *packet);
+void set_packet_type(packet_t *packet, packet_type type);
 
 //
 // Write functions
