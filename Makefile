@@ -10,7 +10,7 @@ libs:
 	cd lib/unitc && make build
 
 dirs:
-	mkdir ./$(BIN)
+	mkdir -p ./$(BIN)
 
 test: libs
 	mkdir -p $(TEST_BIN)
@@ -20,6 +20,12 @@ docs:
 	cd lib/doxygen && cmake -G "Unix Makefiles"
 	cd lib/doxygen && make
 	lib/doxygen/bin/doxygen $(DOC_CONFIG)
+
+server: dirs
+	$(CC) src/packet.c src/server/*.c -o $(BIN)/server -I include/
+
+client: dirs
+	$(CC) src/packet.c src/client/*.c -o $(BIN)/client -I include/
 
 clean:
 	rm -rf $(BIN) $(TEST_BIN)
