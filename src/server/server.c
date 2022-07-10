@@ -14,11 +14,10 @@
 
 typedef struct client_type
 {
-    int id;
     int sockfd;
 } client_t;
 
-client_t clients[MAXCLIENTS];
+static client_t clients[MAXCLIENTS];
 
 // Forward declations
 static void get_ip_string(const struct sockaddr *sa, char *s, size_t maxlen);
@@ -103,7 +102,15 @@ int main(int argc, char *argv[])
 
         printf("Server: Received connection from %s\n", address);
         
-        if (!fork()) // This is the child process
+        pid_t pid = fork();
+        
+        if (pid == -1) // Forking failed
+        {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        
+        if (pid == 0) // This is the child process
         {
             close(sockfd); // Close the unused socket.
 
@@ -153,7 +160,7 @@ static void handle_connection(int sockfd)
             
     while (1)
     {
-        if ((recv(sockfd, (void *)packet, sizeof(packet_t), 0)) == -1)
+        if ((recv(sockfd, (void *)packet, sizeof(packet_t), MSG_WAITALL)) == -1)
         {
             perror("recv");
             continue;
