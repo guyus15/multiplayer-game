@@ -17,24 +17,24 @@
 #define FLOATSIZE 4
 #define DOUBLESIZE 8
 
-typedef enum serverpackets_enum
+typedef enum packet_type_enum
 {
-    SPAWN_PLAYER = 0
-} serverpackets_e;
-
-typedef enum clientpackets_enum
-{   
-    SPAWN_PLAYER_RECEIVED = 0
-} clientpackets_e;
+    NONE = 0,
+    WELCOME,
+    WELCOME_RECEIVED
+} packet_type;
 
 typedef struct packet_struct
 {   
+    packet_type type;
     size_t size;
     int read_head;
     unsigned char buffer[PACKET_SIZE];
 } packet_t;
 
-packet_t* create_packet();
+packet_t* create_packet(packet_type type);
+
+packet_type get_packet_type(packet_t *packet);
 
 //
 // Write functions

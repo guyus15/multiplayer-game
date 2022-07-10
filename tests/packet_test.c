@@ -13,7 +13,7 @@ static packet_t *packet;
 
 static void before_each()
 {
-    packet = create_packet();
+    packet = create_packet(NONE);
 }
 
 static void after_each()
@@ -28,7 +28,9 @@ static void test_create_packet()
 
     // This test ensures that the create_packet() function works at intended.
     
+    ASSERT_EQUAL(packet->type, NONE);
     ASSERT_EQUAL(packet->size, 0);
+    ASSERT_EQUAL(packet->read_head, 0);
 }
 
 // Test 2
@@ -455,6 +457,17 @@ static void test_reading_from_empty_packet()
     ASSERT_EQUAL(status, -1);
 }
 
+// Test 23
+static void test_get_packet_type()
+{
+    test_name("test_get_packet_type");
+
+    // This test ensures that when calling the get_packet_type() function,
+    // the expected packet type is returned.
+
+    ASSERT_EQUAL(get_packet_type(packet), NONE);
+}
+
 int main()
 {
     set_before_each(before_each);
@@ -483,8 +496,9 @@ int main()
         test_read_double,
         test_read_and_write_all_types,
         test_writing_to_full_packet,
-        test_reading_from_empty_packet
+        test_reading_from_empty_packet,
+        test_get_packet_type
     };
 
-    run_tests(tests, 22);
+    run_tests(tests, 23);
 }
