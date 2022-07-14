@@ -56,6 +56,8 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    freeaddrinfo(result);
+
     printf("Connected.\n");
 
     packet_t *packet = create_packet();
@@ -77,7 +79,5 @@ int main(int argc, char *argv[])
         break;
     }
         
-    freeaddrinfo(result);
-
     return 0;
 }
