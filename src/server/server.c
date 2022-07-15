@@ -1,3 +1,9 @@
+/**
+ * @file server.c
+ * @brief Specifies the functionality behind managing connections, and sending
+ * and receiving data to and from clients.
+ */
+
 #include <arpa/inet.h>
 #include <errno.h>
 #include <stdio.h>
