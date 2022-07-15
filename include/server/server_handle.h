@@ -1,3 +1,8 @@
+/**
+ * @file server_handle.c
+ * @brief Specifies functions to handle receiving specific packets.
+ */
+
 #ifndef SERVER_HANDLE_H
 #define SERVER_HANDLE_H
 
