@@ -1,3 +1,9 @@
+/**
+ * @file client.c
+ * @brief Specifies the functionality behind connecting to the server and 
+ * sending and recieving data to and from it.
+ */
+
 #include <packet.h>
 #include <errno.h>
 #include <stdio.h>
