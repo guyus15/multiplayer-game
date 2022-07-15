@@ -72,7 +72,16 @@ int main(int argc, char *argv[])
             continue;
         }
         
-        printf("Packet size is: %ld\n", packet->size);
+        printf("Packet sent!\n");
+        
+        // Send a disconnect message to the server.
+        if ((send(sockfd, NULL, 0, 0)) == -1)
+        {   
+            perror("send");
+            continue;
+        }
+
+        printf("Disconnected\n");
 
         close(sockfd);
 
