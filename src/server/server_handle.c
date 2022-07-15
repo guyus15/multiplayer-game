@@ -1,4 +1,28 @@
+/**
+ * @file server_handle.c
+ * @brief Specifies functions to handle receiving specific packets.
+ */
+
 #include <server/server_handle.h>
+#include <stdio.h>
+
+/*
+typedef struct packet_handler_type
+{
+    int packet_id;
+    void (*packet_handler)(int from_client, packet_t *packet);
+} packet_handler_t;
+*/
+
+// Forward declarations
+static void do_nothing(int from_client, packet_t *packet);
+static void welcome_received(int from_client, packet_t *packet);
+
+/**
+ * Handles an incoming packet by calling an associated function.
+ *
+ * @param from_client The ID of the client the packet was received from.
+ * @param *packet A pointer to the received packet.include <server/server_handle.h>
 #include <stdio.h>
 
 /*
@@ -57,3 +81,4 @@ static void welcome_received(int from_client, packet_t *packet)
 {
     printf("The client has told us they have received the welcome message\n");
 }
+￼
