@@ -1,4 +1,5 @@
 #include <arpa/inet.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,7 +22,18 @@ static client_t clients[MAXCLIENTS];
 
 // Forward declations
 static void get_ip_string(const struct sockaddr *sa, char *s, size_t maxlen);
-static void handle_connection(int sockfd);
+static void handle_connection();
+static void handle_activity();
+static void reset_socket_set();
+
+static fd_set readfds;
+static char address[INET_ADDRSTRLEN];
+static int status, master_sockfd, sockfd,
+           newsockfd, max_sockfd, activity;
+static int client_sockets[MAXCLIENTS];
+static struct addrinfo hints, *result, *rp;
+static struct sockaddr_storage peer_addr;
+static socklen_t peer_addr_len;
 
 int main(int argc, char *argv[])
 {
@@ -30,12 +42,11 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Usage: %s <port>\n", argv[0]);
         exit(0);
     }
-    
-    int status, sockfd, newsockfd;
-    struct addrinfo hints, *result, *rp;
-    struct sockaddr_storage peer_addr;
-    socklen_t peer_addr_len;
+   
+    // Zero the client_sockets array
+    memset(client_sockets, 0, sizeof(client_sockets));
 
+    // Set up hints
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
@@ -49,21 +60,21 @@ int main(int argc, char *argv[])
 
     for (rp = result; rp != NULL; rp = rp->ai_next)
     {
-        sockfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+        master_sockfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
 
-        if (sockfd == -1)
+        if (master_sockfd == -1)
         {
             continue;
         }
 
-        if (bind(sockfd, rp->ai_addr, rp->ai_addrlen) == 0)
+        if (bind(master_sockfd, rp->ai_addr, rp->ai_addrlen) == 0)
         {
             // If we have reached here, we have successfully binded,
             // so we can break.
             break; 
         }
 
-        close(sockfd);
+        close(master_sockfd);
     }
 
     // Free linked list
@@ -76,7 +87,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    if (listen(sockfd, BACKLOG) == -1)
+    if (listen(master_sockfd, BACKLOG) == -1)
     {
         perror("listen");
         exit(-1);
@@ -84,39 +95,28 @@ int main(int argc, char *argv[])
 
     printf("Server: Listening for connections...\n");
 
+
     while (1)
     {
-        peer_addr_len = sizeof(peer_addr);
+        reset_socket_set();
 
-        newsockfd = accept(sockfd, (struct sockaddr *)&peer_addr, &peer_addr_len);
-        if (newsockfd == -1)
+        activity = select(max_sockfd + 1, &readfds, NULL, NULL, NULL);
+
+        if ((activity < 0) && (errno != EINTR))
         {
-            perror("accept");
-            continue;
+            perror("select");
         }
 
-        // Recieved connection
-
-        char address[INET6_ADDRSTRLEN];
-        get_ip_string((struct sockaddr *)&peer_addr, address, INET6_ADDRSTRLEN);
-
-        printf("Server: Received connection from %s\n", address);
-        
-        pid_t pid = fork();
-        
-        if (pid == -1) // Forking failed
+        if (FD_ISSET(master_sockfd, &readfds))
         {
-            perror("fork");
-            exit(EXIT_FAILURE);
-        }
-        
-        if (pid == 0) // This is the child process
-        {
-            close(sockfd); // Close the unused socket.
+            // Check for activity on the master socket, if there is some,
+            // this is an incoming connection.
+            handle_connection();
 
-            printf("Thank you main process! I am now handling socket %d.\n", newsockfd);
-            handle_connection(newsockfd);
-        }
+        }  
+
+        // Otherwise, it is some operation on another socket.
+        handle_activity();
     }
     
     close(newsockfd);
@@ -150,24 +150,96 @@ static void get_ip_string(const struct sockaddr *sa, char *s, size_t maxlen)
 }
 
 /**
- * Handle an incoming TCP connection
- *
- * @param sockfd The socket file descriptor for the socket created with accept().
+ * Handles an incoming connection TCP on the master socket.
  */
-static void handle_connection(int sockfd)
-{
-    packet_t *packet = create_packet(); // Allocate memory for received packet
-            
-    while (1)
-    {
-        if ((recv(sockfd, (void *)packet, sizeof(packet_t), MSG_WAITALL)) == -1)
-        {
-            perror("recv");
-            continue;
-        }
- 
-        printf("Packet size is: %ld\n", packet->size);
+static void handle_connection()
+{ 
+    peer_addr_len = sizeof(peer_addr);
 
-        handle_packet(0, packet);
+    if ((newsockfd = accept(master_sockfd,
+                (struct sockaddr *)&peer_addr, 
+                (socklen_t*)&peer_addr_len)) == -1)
+    {
+        perror("accept");
+        exit(EXIT_FAILURE);
+    }
+                
+    for (int i = 0; i < MAXCLIENTS; i++)
+    {
+        if (client_sockets[i] == 0)
+        {
+            client_sockets[i] = newsockfd;
+
+            printf("Adding new client to list of connected clients\n");
+
+            break;
+        }
+    }
+
+    get_ip_string((struct sockaddr *)&peer_addr, address, peer_addr_len);
+    printf("Server: Received connection from %s\n", address);
+}
+
+/**
+ * Checks each socket for activity, if a socket is active,
+ * then it will handle it appropriately.
+ */
+static void handle_activity()
+{  
+    for (int i = 0; i < MAXCLIENTS; i++)
+    {
+        sockfd = client_sockets[i];
+
+        if (FD_ISSET(sockfd, &readfds))
+        {
+            packet_t *packet = create_packet();            
+            status = recv(sockfd, (packet_t *)packet, sizeof(packet_t), 0);
+
+            if (status == 0)
+            {   
+                // Nothing has been read, so handle a client disconnection.
+                printf("Server: A client disconnected\n");
+
+                close(sockfd);
+                client_sockets[i] = 0;
+            } else if (status == -1)
+            {
+                perror("recv");
+                continue;
+            } else 
+            {
+                // Server has read some data, so handle a received packet.
+
+                printf("Server has received a packet. Of type %d\n", packet->type);
+            }
+        } 
+    }
+}
+
+/**
+ * Reset the socket set to check for socket activity.
+ */
+static void reset_socket_set()
+{ 
+    // Clears the socket set
+    FD_ZERO(&readfds);
+
+    // Add the master socket to the set
+    FD_SET(master_sockfd, &readfds);
+    max_sockfd = master_sockfd;
+
+    for (int i = 0; i < MAXCLIENTS; i++)
+    {
+        sockfd = client_sockets[i];
+
+        if (sockfd > 0)
+        {
+            FD_SET(sockfd, &readfds);
+        }
+
+        if (sockfd > max_sockfd)
+        {
+            max_sockfd = sockfd;
+        }
     }
 }
