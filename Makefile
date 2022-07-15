@@ -28,4 +28,4 @@ client: dirs
 	$(CC) src/packet.c src/client/*.c -o $(BIN)/client -I include/
 
 clean:
-	rm -rf $(BIN) $(TEST_BIN)
+	rm -rf $(BIN) $(TEST_BIN) $(DOCS)
