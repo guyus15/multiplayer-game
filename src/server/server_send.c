@@ -32,6 +32,19 @@ void send_welcome_message(int to_client)
 }
 
 /**
+ * Sends a spawn player packet to a specific client.
+ *
+ * @param to_client The ID of the target client.
+ */
+void send_spawn_player_message(int to_client)
+{
+    packet_t *spawn_packet = create_packet();
+    set_packet_type(spawn_packet, SPAWN_PLAYER);
+
+    send_data(to_client, spawn_packet);
+}
+
+/**
  * Sends a given packet to a specific client. 
  * 
  * @param to_client The ID of the target client.
