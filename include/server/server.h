@@ -7,6 +7,8 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <player.h>
+
 #define MAXCLIENTS 10
 #define BACKLOG 10
 
@@ -15,10 +17,12 @@
  */
 typedef struct client_type
 {
-    int id;
-    int sockfd;
+    int id, sockfd;
+    player_t *player;
 } client_t;
 
 extern client_t clients[MAXCLIENTS];
+
+void send_into_game(const char *player_name);
 
 #endif
