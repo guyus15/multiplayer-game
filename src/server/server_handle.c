@@ -54,4 +54,3 @@ static void welcome_received(int from_client, packet_t *packet)
 {
     printf("The client has told us they have received the welcome message\n");
 }
-￼

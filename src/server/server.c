@@ -19,12 +19,14 @@
 #define MAXCLIENTS 10
 #define BACKLOG 10
 
+/**
+ * Encapsulates client-related data.
+ */
 typedef struct client_type
 {
+    int id;
     int sockfd;
 } client_t;
-
-static client_t clients[MAXCLIENTS];
 
 // Forward declations
 static void get_ip_string(const struct sockaddr *sa, char *s, size_t maxlen);
@@ -36,7 +38,7 @@ static fd_set readfds;
 static char address[INET_ADDRSTRLEN];
 static int status, master_sockfd, sockfd,
            newsockfd, max_sockfd, activity;
-static int client_sockets[MAXCLIENTS];
+static client_t clients[MAXCLIENTS];
 static struct addrinfo hints, *result, *rp;
 static struct sockaddr_storage peer_addr;
 static socklen_t peer_addr_len;
@@ -49,8 +51,14 @@ int main(int argc, char *argv[])
         exit(0);
     }
    
-    // Zero the client_sockets array
-    memset(client_sockets, 0, sizeof(client_sockets));
+    // Zero the clients array
+    memset(clients, 0, sizeof(clients));
+
+    // Set up the IDs for each of the clients in the clients array.
+    for (int i = 0; i < MAXCLIENTS; i++)
+    {   
+        clients[i].id = i;
+    }
 
     // Set up hints
     memset(&hints, 0, sizeof(hints));
@@ -172,9 +180,9 @@ static void handle_connection()
                 
     for (int i = 0; i < MAXCLIENTS; i++)
     {
-        if (client_sockets[i] == 0)
+        if (clients[i].sockfd == 0)
         {
-            client_sockets[i] = newsockfd;
+            clients[i].sockfd = newsockfd;
 
             printf("Adding new client to list of connected clients\n");
 
@@ -194,7 +202,7 @@ static void handle_activity()
 {  
     for (int i = 0; i < MAXCLIENTS; i++)
     {
-        sockfd = client_sockets[i];
+        sockfd = clients[i].sockfd;
 
         if (FD_ISSET(sockfd, &readfds))
         {
@@ -207,7 +215,7 @@ static void handle_activity()
                 printf("Server: A client disconnected\n");
 
                 close(sockfd);
-                client_sockets[i] = 0;
+                clients[i].sockfd = 0;
             } else if (status == -1)
             {
                 perror("recv");
@@ -236,7 +244,7 @@ static void reset_socket_set()
 
     for (int i = 0; i < MAXCLIENTS; i++)
     {
-        sockfd = client_sockets[i];
+        sockfd = clients[i].sockfd;
 
         if (sockfd > 0)
         {
