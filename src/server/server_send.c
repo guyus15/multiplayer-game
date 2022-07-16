@@ -36,10 +36,12 @@ void send_welcome_message(int to_client)
  *
  * @param to_client The ID of the target client.
  */
-void send_spawn_player_message(int to_client)
+void send_spawn_player_message(int to_client, player_t *player)
 {
     packet_t *spawn_packet = create_packet();
     set_packet_type(spawn_packet, SPAWN_PLAYER);
+
+    
 
     send_data(to_client, spawn_packet);
 }
