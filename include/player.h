@@ -3,7 +3,7 @@
 
 #define PLAYER_NAME 20
 
-struct player_type
+typedef struct player_type
 {
     int id;
     char username[PLAYER_NAME];
