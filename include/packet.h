@@ -22,6 +22,7 @@ typedef enum packet_type_enum
     NONE = 0,
     WELCOME,
     WELCOME_RECEIVED,
+    SPAWN_PLAYER,
     PLAYER_MOVEMENT
 } packet_type;
 
