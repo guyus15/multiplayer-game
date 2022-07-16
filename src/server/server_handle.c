@@ -73,7 +73,7 @@ static void welcome_received(int from_client, packet_t *packet)
         player_name[i + 1] = current;
     }
 
-    send_into_game((const char *)player_name);
+    send_into_game(from_client, (const char *)player_name);
 }
 
 static void player_movement(int from_client, packet_t *packet)
