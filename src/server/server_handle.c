@@ -4,6 +4,7 @@
  */
 
 #include <server/server_handle.h>
+#include <server/server.h>
 #include <stdio.h>
 
 // Forward declarations
@@ -60,6 +61,19 @@ static void do_nothing(int from_client, packet_t *packet)
 static void welcome_received(int from_client, packet_t *packet)
 {
     printf("Server: WELCOME_MESSAGE_RECEIVED packet received from client %d\n", from_client);
+
+    char player_name[30];
+
+    char current;
+    read_byte(packet, &current);
+    player_name[0] = current;
+    for (int i = 0; current != '\0'; i++)
+    {
+        read_byte(packet, &current);
+        player_name[i + 1] = current;
+    }
+
+    send_into_game((const char *)player_name);
 }
 
 static void player_movement(int from_client, packet_t *packet)
