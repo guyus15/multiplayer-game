@@ -13,6 +13,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <poll.h>
 
 int main(int argc, char *argv[])
 {
@@ -22,7 +23,8 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    int status, sockfd;
+    int status, activity, sockfd;
+    struct pollfd pollfd;
     struct addrinfo hints, *result, *rp;
 
     memset(&hints, 0, sizeof(hints));
@@ -66,20 +68,38 @@ int main(int argc, char *argv[])
 
     printf("Connected.\n");
 
+    pollfd.fd = sockfd;
+    pollfd.events = POLLIN;
+
     packet_t *packet = create_packet();
     
     set_packet_type(packet, WELCOME_RECEIVED);
 
     while (1)
     {   
-        if ((send(sockfd, (void *)packet, sizeof(packet_t), 0)) == -1)
+        // Check if sockfd has stuff to read from (server has sent data)
+        activity = poll(&pollfd, 1, -1);
+
+        if (activity == -1)
         {
-            perror("send");
+            perror("poll");
+            continue;
+        } else if (activity == 0)
+        {
             continue;
         }
         
-        printf("Packet sent!\n");
-        
+        // Read from sockfd (the server data)
+        packet_t *receive_packet = create_packet();
+        if ((recv(sockfd, receive_packet, sizeof(packet_t), 0)) == -1)
+        {
+            perror("recv");
+            continue;
+        }
+
+        // Handle the received packet.
+        printf("Received a packet from the server.\nPacket type is %d\n", receive_packet->type);
+
         // Send a disconnect message to the server.
         if ((send(sockfd, NULL, 0, 0)) == -1)
         {   
