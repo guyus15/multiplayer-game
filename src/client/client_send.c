@@ -18,10 +18,17 @@ static void send_data(packet_t *packet);
 
 void send_welcome_received()
 {
-    packet_t *welcome_received_pckt = create_packet();
-    set_packet_type(welcome_received_pckt, WELCOME_RECEIVED);
+    packet_t *packet = create_packet();
+    set_packet_type(packet, WELCOME_RECEIVED);
 
-    send_data(welcome_received_pckt);
+    char player_name[30] = "Test Name\0";
+
+    for (int i = 0; player_name[i] != '\0'; i++)
+    {
+        write_byte(packet, player_name[i]);
+    }
+
+    send_data(packet);
 }
 
 static void send_data(packet_t *packet)
