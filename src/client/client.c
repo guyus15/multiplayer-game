@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    int status, activity, sockfd;
+    int status, activity;
     struct pollfd pollfd;
     struct addrinfo hints, *result, *rp;
 
@@ -72,10 +72,6 @@ int main(int argc, char *argv[])
 
     pollfd.fd = sockfd;
     pollfd.events = POLLIN;
-
-    packet_t *packet = create_packet();
-    
-    set_packet_type(packet, WELCOME_RECEIVED);
 
     while (1)
     {   
