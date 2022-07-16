@@ -1,9 +1,9 @@
 [submodule "lib/unitc"]
 	path = lib/unitc
 	url = https://github.com/guyus15/unitc.git
-[submodule "lib"]
-	path = lib
-	url = https://github.com/guyus15/unitc.git
 [submodule "lib/doxygen"]
 	path = lib/doxygen
 	url = https://github.com/doxygen/doxygen.git
+[submodule "lib/glfw"]
+	path = lib/glfw
+	url = https://github.com/glfw/glfw.git
