@@ -1,5 +1,5 @@
 /**
- * @file server_handle.c
+ * @file server_handle.h
  * @brief Specifies functions to handle receiving specific packets.
  */
 

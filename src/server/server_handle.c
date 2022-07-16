@@ -9,6 +9,7 @@
 // Forward declarations
 static void do_nothing(int from_client, packet_t *packet);
 static void welcome_received(int from_client, packet_t *packet);
+static void player_movement(int from_client, packet_t *packet);
 
 /**
  * Handles an incoming packet by calling an associated function.
@@ -18,6 +19,9 @@ static void welcome_received(int from_client, packet_t *packet);
  */
 void handle_packet(int from_client, packet_t *packet)
 {
+    // TODO: Do some memory management after we're done with the packet.
+    // Otherwise everytime a packet is received, more memory will be used up.
+
     switch (packet->type)
     {
         case NONE:
@@ -25,6 +29,9 @@ void handle_packet(int from_client, packet_t *packet)
             break;
         case WELCOME_RECEIVED:
             welcome_received(from_client, packet);
+            break;
+        case PLAYER_MOVEMENT:
+            player_movement(from_client, packet);
             break;
         default:
             do_nothing(from_client, packet);
@@ -52,5 +59,10 @@ static void do_nothing(int from_client, packet_t *packet)
  */
 static void welcome_received(int from_client, packet_t *packet)
 {
-    printf("The client has told us they have received the welcome message\n");
+    printf("Server: WELCOME_MESSAGE_RECEIVED packet received from client %d\n", from_client);
+}
+
+static void player_movement(int from_client, packet_t *packet)
+{
+    printf("The client has sent a player movement packet.\n");
 }

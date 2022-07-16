@@ -1,5 +1,5 @@
 /**
- * @file client.c
+ * @file client.h
  * @brief Specifies the functionality behind connecting to the server and 
  * sending and recieving data to and from it.
  */

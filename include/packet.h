@@ -21,7 +21,8 @@ typedef enum packet_type_enum
 {
     NONE = 0,
     WELCOME,
-    WELCOME_RECEIVED
+    WELCOME_RECEIVED,
+    PLAYER_MOVEMENT
 } packet_type;
 
 typedef struct packet_struct

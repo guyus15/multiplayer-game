@@ -1,3 +1,9 @@
+/**
+ * @file server.h
+ * @brief Specifies the functionality behind managing connections, and sending
+ * and receiving data to and from clients.
+ */
+
 #ifndef SERVER_H
 #define SERVER_H
 
