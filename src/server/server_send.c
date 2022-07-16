@@ -39,9 +39,22 @@ void send_welcome_message(int to_client)
  */
 static void send_data(int to_client, packet_t *packet)
 {
-    int sockfd = clients[to_client].sockfd;
+    client_t client;
+    int id;
 
-    if ((send(sockfd, packet, sizeof(packet_t), 0)) == -1)
+    // Look for the client ID in the client list.
+    for (int i = 0; i < MAXCLIENTS; i++)
+    {
+        id = clients[i].id;
+
+        if (id == to_client)
+        {
+            client = clients[i];
+            break;
+        }
+    }
+    
+    if ((send(client.sockfd, packet, sizeof(packet_t), 0)) == -1)
     {
         perror("send");
     }
