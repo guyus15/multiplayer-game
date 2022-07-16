@@ -5,6 +5,7 @@
 
 #include <player.h>
 #include <stdlib.h>
+#include <string.h>
 
 player_t *create_player()
 {
