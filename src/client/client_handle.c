@@ -4,6 +4,7 @@
  */
 
 #include <client/client_handle.h>
+#include <client/client_send.h>
 #include <stdio.h>
 
 // Forward declarations
@@ -35,7 +36,7 @@ void handle_packet(packet_t *packet)
  */
 static void welcome(packet_t *packet)
 {
-    printf("Client: Received a welcome packet.");
+    printf("Client: Received a welcome packet.\n");
 
-    // TODO: respond to the server with a WELCOME_RECEIVED packet.
+    send_welcome_received();
 }
