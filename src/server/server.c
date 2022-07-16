@@ -15,10 +15,8 @@
 #include <unistd.h>
 #include <packet.h>
 #include <server/server.h>
+#include <server/server_send.h>
 #include <server/server_handle.h>
-
-#define MAXCLIENTS 10
-#define BACKLOG 10
 
 // Forward declations
 static void get_ip_string(const struct sockaddr *sa, char *s, size_t maxlen);
@@ -30,7 +28,6 @@ static fd_set readfds;
 static char address[INET_ADDRSTRLEN];
 static int status, master_sockfd, sockfd,
            newsockfd, max_sockfd, activity;
-static client_t clients[MAXCLIENTS];
 static struct addrinfo hints, *result, *rp;
 static struct sockaddr_storage peer_addr;
 static socklen_t peer_addr_len;
@@ -169,14 +166,15 @@ static void handle_connection()
         perror("accept");
         exit(EXIT_FAILURE);
     }
-                
+
     for (int i = 0; i < MAXCLIENTS; i++)
     {
         if (clients[i].sockfd == 0)
         {
             clients[i].sockfd = newsockfd;
 
-            // TODO: Send welcome message to the client on successful connection
+            // Send welcome message to the client upon successful connection
+            send_welcome_message(i);
 
             break;
         }
