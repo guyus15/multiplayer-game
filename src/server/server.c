@@ -14,19 +14,11 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <packet.h>
+#include <server/server.h>
 #include <server/server_handle.h>
 
 #define MAXCLIENTS 10
 #define BACKLOG 10
-
-/**
- * Encapsulates client-related data.
- */
-typedef struct client_type
-{
-    int id;
-    int sockfd;
-} client_t;
 
 // Forward declations
 static void get_ip_string(const struct sockaddr *sa, char *s, size_t maxlen);
@@ -184,7 +176,7 @@ static void handle_connection()
         {
             clients[i].sockfd = newsockfd;
 
-            printf("Adding new client to list of connected clients\n");
+            // TODO: Send welcome message to the client on successful connection
 
             break;
         }
@@ -223,8 +215,7 @@ static void handle_activity()
             } else 
             {
                 // Server has read some data, so handle a received packet.
-
-                printf("Server has received a packet. Of type %d\n", packet->type);
+                handle_packet(clients[i].id, packet);
             }
         } 
     }
