@@ -14,6 +14,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <packet.h>
+#include <player.h>
 #include <server/server.h>
 #include <server/server_send.h>
 #include <server/server_handle.h>
@@ -125,6 +126,50 @@ int main(int argc, char *argv[])
     close(newsockfd);
 
     return 0;
+}
+
+/**
+ * Sends a player into the game and informs all other clients of their 
+ * existence.
+ *
+ * @param client_id The ID of the client that is being sent in to the game.
+ * @param player_name The name of the player being sent into the game.
+ */
+void send_into_game(int client_id, const char *player_name)
+{   
+    printf("Server: Sending player '%s' into the game\n", player_name);
+
+    // Create a player
+    clients[client_id].player = create_player();  
+
+    // Check all other clients for players and spawn them locally.
+    
+    client_t current_client;
+    
+    for (int i = 0; i < MAXCLIENTS; i++)
+    {
+        current_client = clients[i];
+
+        if (current_client.player != NULL)
+        {
+            if (current_client.id != client_id)
+            {
+                send_spawn_player_message(client_id, current_client.player);
+            }
+        }
+    }
+
+    // Let all other clients know of this player's existence (including himself).
+    for (int i = 0; i < MAXCLIENTS; i++)
+    {
+        current_client = clients[i];
+
+        if (current_client.player != NULL)
+        {
+
+            send_spawn_player_message(current_client.id, clients[client_id].player);
+        }
+    }
 }
 
 /**

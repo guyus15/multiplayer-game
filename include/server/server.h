@@ -23,6 +23,6 @@ typedef struct client_type
 
 extern client_t clients[MAXCLIENTS];
 
-void send_into_game(const char *player_name);
+void send_into_game(int client_id, const char *player_name);
 
 #endif
