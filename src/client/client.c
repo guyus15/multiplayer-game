@@ -4,6 +4,7 @@
  * sending and recieving data to and from it.
  */
 
+#include <client/client.h>
 #include <packet.h>
 #include <errno.h>
 #include <stdio.h>
@@ -14,6 +15,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <poll.h>
+#include <client/client_handle.h>
 
 int main(int argc, char *argv[])
 {
@@ -98,7 +100,7 @@ int main(int argc, char *argv[])
         }
 
         // Handle the received packet.
-        printf("Received a packet from the server.\nPacket type is %d\n", receive_packet->type);
+        handle_packet(receive_packet);
 
         // Send a disconnect message to the server.
         if ((send(sockfd, NULL, 0, 0)) == -1)
