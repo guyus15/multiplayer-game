@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     while (1)
     {   
         // Check if sockfd has stuff to read from (server has sent data)
-        activity = poll(&pollfd, 1, -1);
+        activity = poll(&pollfd, 1, 0);
 
         if (activity == -1)
         {
@@ -97,19 +97,6 @@ int main(int argc, char *argv[])
 
         // Handle the received packet.
         handle_packet(receive_packet);
-
-        // Send a disconnect message to the server.
-        if ((send(sockfd, NULL, 0, 0)) == -1)
-        {   
-            perror("send");
-            continue;
-        }
-
-        printf("Disconnected\n");
-
-        close(sockfd);
-
-        break;
     }
         
     return 0;
