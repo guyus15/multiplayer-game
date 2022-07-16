@@ -73,6 +73,11 @@ static void send_data_to_all(packet_t *packet)
     {
         sockfd = clients[i].sockfd;
 
+        if (sockfd == 0)
+        {
+            continue;
+        }
+
         if ((send(sockfd, packet, sizeof(packet_t), 0)) == -1)
         {
             perror("send");
@@ -97,7 +102,7 @@ static void send_data_to_all_except(int except_client, packet_t *packet)
         id = clients[i].id;
         sockfd = clients[i].sockfd;
 
-        if (id = except_client)
+        if (sockfd == 0 || id == except_client)
         {
             continue;
         }
