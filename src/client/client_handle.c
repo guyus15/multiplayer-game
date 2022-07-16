@@ -9,6 +9,7 @@
 
 // Forward declarations
 static void welcome(packet_t *packet);
+static void spawn_player(packet_t *packet);
 
 /**
  * Handles an incoming packet by calling an associated function.
@@ -23,6 +24,9 @@ void handle_packet(packet_t *packet)
             break;
         case WELCOME:
             welcome(packet);
+            break;
+        case SPAWN_PLAYER:
+            spawn_player(packet);
             break;
         default:
             break;
@@ -39,4 +43,14 @@ static void welcome(packet_t *packet)
     printf("Client: Received a welcome packet.\n");
 
     send_welcome_received();
+}
+
+/**
+ * A function used to handle packets of type SPAWN_PLAYER.
+ *
+ * @param packet A pointer to the received packet.
+ */
+static void spawn_player(packet_t *packet)
+{
+    printf("Spawning a player.\n");
 }
