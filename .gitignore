@@ -69,3 +69,6 @@ src/client/*
 !src/*.c
 !src/server/*.c
 !src/client/*.c
+
+# .vscode Directory
+.vscode/
