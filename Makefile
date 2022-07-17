@@ -22,7 +22,7 @@ docs:
 	lib/doxygen/bin/doxygen $(DOC_CONFIG)
 
 server: dirs
-	$(CC) src/packet.c src/player.c src/server/*.c -o $(BIN)/server -I include/
+	$(CC) src/packet.c src/player.c src/server/*.c -o $(BIN)/server -I include/ -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm
 
 client: dirs
 	$(CC) src/packet.c src/client/*.c -o $(BIN)/client -I include/
