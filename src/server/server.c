@@ -13,13 +13,17 @@
 #include <sys/types.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <GLFW/glfw3.h>
 #include <packet.h>
 #include <player.h>
 #include <server/server.h>
 #include <server/server_send.h>
 #include <server/server_handle.h>
 
+#define TICKS_PER_SEC 30
+
 // Forward declations
+static void error_callback(int error, const char *description);
 static void get_ip_string(const struct sockaddr *sa, char *s, size_t maxlen);
 static void handle_connection();
 static void handle_activity();
@@ -40,7 +44,35 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Usage: %s <port>\n", argv[0]);
         exit(0);
     }
-   
+    
+    /*
+     * Setting up GLFW
+     */
+    GLFWwindow *offscreen_context;
+
+    if (glfwInit() == 0)
+    {
+        perror("glfwInit");
+        exit(EXIT_FAILURE);
+    }
+
+    glfwSetErrorCallback(error_callback);
+    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+
+    offscreen_context = glfwCreateWindow(100, 100, "Server", NULL, NULL);
+
+    if (offscreen_context == 0)
+    {
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+
+    glfwMakeContextCurrent(offscreen_context);
+
+    /*
+     * Set up socket to listen for connections
+     */
+
     // Zero the clients array
     memset(clients, 0, sizeof(clients));
 
@@ -99,12 +131,29 @@ int main(int argc, char *argv[])
 
     printf("Server: Listening for connections...\n");
 
+    /*
+     * Main server loop
+     */
 
-    while (1)
+    double current_time = glfwGetTime(), last_time = current_time;
+    double target_interval = 1.0 / TICKS_PER_SEC;
+
+    while (!glfwWindowShouldClose(offscreen_context))
     {
+        current_time = glfwGetTime();
+        if ((current_time - last_time) > target_interval)
+        {
+            last_time = current_time;
+        } else {
+            continue;
+        }
+
+        printf("tick\n");
+
         reset_socket_set();
 
-        activity = select(max_sockfd + 1, &readfds, NULL, NULL, NULL);
+        struct timeval timeout = {0, 0};
+        activity = select(max_sockfd + 1, &readfds, NULL, NULL, &timeout);
 
         if ((activity < 0) && (errno != EINTR))
         {
@@ -170,6 +219,17 @@ void send_into_game(int client_id, const char *player_name)
             send_spawn_player_message(current_client.id, clients[client_id].player);
         }
     }
+}
+
+/**
+ * An error callback function for handling GLFW errors.
+ * 
+ * @param error The ID of the error.
+ * @param description A description of the error.
+ */
+static void error_callback(int error, const char *description)
+{
+    fprintf(stderr, "GLFW error: %s\n", description);
 }
 
 /**
