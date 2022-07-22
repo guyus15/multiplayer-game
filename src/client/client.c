@@ -81,6 +81,8 @@ int main(int argc, char *argv[])
 
     while (!glfwWindowShouldClose(context))
     {   
+        update();
+
         // Check if sockfd has stuff to read from (server has sent data)
         activity = poll(&pollfd, 1, 0);
 
