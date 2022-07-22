@@ -7,6 +7,8 @@
 #include <client/client.h>
 #include <packet.h>
 #include <errno.h>
+#include <game.h>
+#include <GLFW/glfw3.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,6 +19,8 @@
 #include <poll.h>
 #include <client/client_handle.h>
 
+GLFWwindow *context;
+
 int main(int argc, char *argv[])
 {
     if (argc != 3)
@@ -24,6 +28,8 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Usage: %s <address> <port>\n", argv[0]);
         exit(0);
     }
+
+    initialise_game();
 
     int status, activity;
     struct pollfd pollfd;
@@ -73,7 +79,7 @@ int main(int argc, char *argv[])
     pollfd.fd = sockfd;
     pollfd.events = POLLIN;
 
-    while (1)
+    while (!glfwWindowShouldClose(context))
     {   
         // Check if sockfd has stuff to read from (server has sent data)
         activity = poll(&pollfd, 1, 0);
