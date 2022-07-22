@@ -1,3 +1,9 @@
+/**
+ * @file game.c
+ * @brief Provides functions for rendering the game world to the 
+ * client application.
+ */
+
 #include <glad/glad.h> // This has to be first
 #include <game.h>
 #include <stdlib.h>

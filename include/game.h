@@ -1,3 +1,9 @@
+/**
+ * @file game.h
+ * @brief Provides functions for rendering the game world to the 
+ * client application.
+ */
+
 #ifndef GAME_H
 #define GAME_H
 
