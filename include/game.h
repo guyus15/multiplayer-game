@@ -6,5 +6,6 @@
 extern GLFWwindow *context;
 
 void initialise_game();
+void update();
 
 #endif

@@ -38,6 +38,20 @@ void initialise_game()
 }
 
 /**
+ * A function called at every frame of the game.
+ * Rendering can be handled here.
+ */
+void update()
+{
+    // Rendering
+    glClear(GL_COLOR_BUFFER_BIT);
+    glwfSwapBuffers(context);
+
+    // Poll and process events.
+    glfwPollEvents();
+}
+
+/**
  * An error callback function for handling GLFW errors.
  * 
  * @param error The ID of the error.
