@@ -148,8 +148,6 @@ int main(int argc, char *argv[])
             continue;
         }
 
-        printf("tick\n");
-
         reset_socket_set();
 
         struct timeval timeout = {0, 0};
