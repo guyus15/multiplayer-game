@@ -64,11 +64,14 @@ tests/bin
 src/*
 !src/server
 !src/client
+!src/glad
 src/server/*
 src/client/*
+src/glad/*
 !src/*.c
 !src/server/*.c
 !src/client/*.c
+!src/glad/*.c
 
 # .vscode Directory
 .vscode/
