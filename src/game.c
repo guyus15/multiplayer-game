@@ -31,6 +31,11 @@ void initialise_game()
         exit(EXIT_FAILURE);
     }
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
     glfwSetErrorCallback(error_callback);
 
     context = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Client", NULL, NULL);
