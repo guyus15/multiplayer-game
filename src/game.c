@@ -8,6 +8,10 @@
 // Forward declaration
 static void error_callback(int error, const char *description);
 
+/**
+ * Creates and configures a GLFW window context to prepare 
+ * for rendering.
+ */
 void initialise_game()
 {
     /*
