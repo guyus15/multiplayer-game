@@ -1,3 +1,4 @@
+#include <glad/glad.h> // This has to be first
 #include <game.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -35,6 +36,14 @@ void initialise_game()
     }
 
     glfwMakeContextCurrent(context);
+
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+    {
+        fprintf(stderr, "Failed to initialise OpenGL context.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 /**
@@ -45,7 +54,7 @@ void update()
 {
     // Rendering
     glClear(GL_COLOR_BUFFER_BIT);
-    glwfSwapBuffers(context);
+    glfwSwapBuffers(context);
 
     // Poll and process events.
     glfwPollEvents();
