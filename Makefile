@@ -25,7 +25,7 @@ server: dirs
 	$(CC) src/packet.c src/player.c src/server/*.c -o $(BIN)/server -I include/ -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm
 
 client: dirs
-	$(CC) src/packet.c src/client/*.c -o $(BIN)/client -I include/
+	$(CC) src/packet.c src/game.c src/client/*.c -o $(BIN)/client -I include/ -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm
 
 clean:
 	rm -rf $(BIN) $(TEST_BIN) $(DOCS)
