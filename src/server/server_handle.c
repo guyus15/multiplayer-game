@@ -7,7 +7,7 @@
 #include <server/server.h>
 #include <stdio.h>
 #include <string.h>
-#include <game.h>
+#include <input.h>
 
 // Forward declarations
 static void do_nothing(int from_client, packet_t *packet);
