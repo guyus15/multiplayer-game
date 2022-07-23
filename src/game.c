@@ -8,12 +8,15 @@
 #include <game.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <client/client_send.h>
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
 // Forward declaration
 static void error_callback(int error, const char *description);
+static void handle_input();
 
 /**
  * Creates and configures a GLFW window context to prepare 
@@ -59,7 +62,7 @@ void initialise_game()
 
 /**
  * A function called at every frame of the game.
- * Rendering can be handled here.
+ * Rendering and input can be handled here.
  */
 void update()
 {
@@ -69,6 +72,8 @@ void update()
 
     // Poll and process events.
     glfwPollEvents();
+
+    handle_input();
 }
 
 /**
@@ -80,4 +85,37 @@ void update()
 static void error_callback(int error, const char *description)
 {
     fprintf(stderr, "GLFW error: %s\n", description);
+}
+
+/**
+ * A function used to gather relevant inputs from the user
+ * and send them to the server.
+ */
+static void handle_input()
+{
+    char inputs[INPUT_SIZE];
+
+    memset(inputs, 0, INPUT_SIZE);
+
+    if (glfwGetKey(context, GLFW_KEY_W) == GLFW_PRESS)
+    {
+        inputs[0] = 1;
+    }
+
+    if (glfwGetKey(context, GLFW_KEY_A) == GLFW_PRESS)
+    {
+        inputs[1] = 1;
+    }
+
+    if (glfwGetKey(context, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        inputs[2] = 1;
+    }
+
+    if (glfwGetKey(context, GLFW_KEY_D) == GLFW_PRESS)
+    {
+        inputs[3] = 1;
+    }
+
+    send_player_input(inputs, INPUT_SIZE);
 }

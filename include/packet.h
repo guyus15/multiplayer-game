@@ -23,7 +23,7 @@ typedef enum packet_type_enum
     WELCOME,
     WELCOME_RECEIVED,
     SPAWN_PLAYER,
-    PLAYER_MOVEMENT
+    PLAYER_INPUT
 } packet_type;
 
 typedef struct packet_struct

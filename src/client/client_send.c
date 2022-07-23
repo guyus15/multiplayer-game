@@ -16,6 +16,9 @@ int sockfd;
 // Forward declarations
 static void send_data(packet_t *packet);
 
+/**
+ * Sends a welcome received packet to the server.
+ */
 void send_welcome_received()
 {
     packet_t *packet = create_packet();
@@ -26,6 +29,26 @@ void send_welcome_received()
     for (int i = 0; player_name[i] != '\0'; i++)
     {
         write_byte(packet, player_name[i]);
+    }
+
+    send_data(packet);
+}
+
+/**
+ * Sends a packet containing the state of input
+ * from the player. 
+ * 
+ * @param inputs A boolean array of inputs. 
+ * @param size  The size of the array of inputs.
+ */
+void send_player_input(char *inputs, size_t size)
+{
+    packet_t *packet = create_packet();
+    set_packet_type(packet, PLAYER_INPUT);
+
+    for (int i = 0; i < size; i++)
+    {
+        write_byte(packet, inputs[i]);
     }
 
     send_data(packet);

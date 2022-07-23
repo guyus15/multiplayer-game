@@ -19,6 +19,8 @@
 #include <poll.h>
 #include <client/client_handle.h>
 
+#define TICKS_PER_SEC 30
+
 GLFWwindow *context;
 
 int main(int argc, char *argv[])
@@ -79,8 +81,19 @@ int main(int argc, char *argv[])
     pollfd.fd = sockfd;
     pollfd.events = POLLIN;
 
+    double current_time = glfwGetTime(), last_time = current_time;
+    double target_interval = 1.0 / TICKS_PER_SEC;
+
     while (!glfwWindowShouldClose(context))
     {   
+        current_time = glfwGetTime();
+        if ((current_time - last_time) > target_interval)
+        {
+            last_time = current_time;
+        } else {
+            continue;
+        }
+        
         update();
 
         // Check if sockfd has stuff to read from (server has sent data)

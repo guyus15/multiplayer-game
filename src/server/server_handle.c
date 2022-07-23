@@ -6,11 +6,13 @@
 #include <server/server_handle.h>
 #include <server/server.h>
 #include <stdio.h>
+#include <string.h>
+#include <game.h>
 
 // Forward declarations
 static void do_nothing(int from_client, packet_t *packet);
 static void welcome_received(int from_client, packet_t *packet);
-static void player_movement(int from_client, packet_t *packet);
+static void player_input(int from_client, packet_t *packet);
 
 /**
  * Handles an incoming packet by calling an associated function.
@@ -31,8 +33,8 @@ void handle_packet(int from_client, packet_t *packet)
         case WELCOME_RECEIVED:
             welcome_received(from_client, packet);
             break;
-        case PLAYER_MOVEMENT:
-            player_movement(from_client, packet);
+        case PLAYER_INPUT:
+            player_input(from_client, packet);
             break;
         default:
             do_nothing(from_client, packet);
@@ -76,7 +78,31 @@ static void welcome_received(int from_client, packet_t *packet)
     send_into_game(from_client, (const char *)player_name);
 }
 
-static void player_movement(int from_client, packet_t *packet)
+/**
+ * A function used to handle packets of type PLAYER_INPUT.
+ * 
+ * @param from_client The ID of the client the packet was received from.
+ * @param packet A pointer to the received packet.
+ */
+static void player_input(int from_client, packet_t *packet)
 {
-    printf("The client has sent a player movement packet.\n");
+    char inputs[INPUT_SIZE];
+    memset(inputs, 0, INPUT_SIZE);
+
+    char current;
+    printf("Current: ");
+    for (int i = 0; i < INPUT_SIZE; i++)
+    {
+        read_byte(packet, &current);
+        printf("%d", current);
+        inputs[i] = current;
+    }
+    printf("\n");
+
+    int is_input = 0;
+
+    if (is_input)
+    {
+        printf("\n");
+    }
 }

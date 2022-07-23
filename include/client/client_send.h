@@ -7,9 +7,9 @@
 #ifndef CLIENT_SEND_H
 #define CLIENT_SEND_H
 
-/**
- * Sends a welcome received packet to the server.
- */
+#include <stddef.h>
+
 void send_welcome_received();
+void send_player_input(char *inputs, size_t size);
 
 #endif

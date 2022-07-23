@@ -9,6 +9,8 @@
 
 #include <GLFW/glfw3.h>
 
+#define INPUT_SIZE 4
+
 extern GLFWwindow *context;
 
 void initialise_game();
