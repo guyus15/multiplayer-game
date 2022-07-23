@@ -36,4 +36,9 @@ void handle_input(GLFWwindow *context, char *inputs)
     {
         inputs[INPUT_D] = 1;
     }
+
+    if (glfwGetKey(context, GLFW_KEY_SPACE) == GLFW_PRESS)
+    {
+        inputs[INPUT_SPACE] = 1;
+    }
 }
