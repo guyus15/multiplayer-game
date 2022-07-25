@@ -19,10 +19,12 @@ static void send_data(packet_t *packet);
 /**
  * Sends a welcome received packet to the server.
  */
-void send_welcome_received()
+void send_welcome_received(int16_t received_id)
 {
     packet_t *packet = create_packet();
     set_packet_type(packet, WELCOME_RECEIVED);
+
+    write_int16(packet, received_id);
 
     char player_name[30] = "Test Name\0";
 

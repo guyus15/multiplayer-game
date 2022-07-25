@@ -23,6 +23,9 @@
 
 GLFWwindow *context;
 
+client_t local_client;
+client_t clients[7];
+
 int main(int argc, char *argv[])
 {
     if (argc != 3)

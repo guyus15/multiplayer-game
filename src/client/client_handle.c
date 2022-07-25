@@ -5,7 +5,11 @@
 
 #include <client/client_handle.h>
 #include <client/client_send.h>
+#include <client/client.h>
 #include <stdio.h>
+
+extern client_t local_client;
+extern client_t clients[7];
 
 // Forward declarations
 static void welcome(packet_t *packet);
@@ -40,9 +44,12 @@ void handle_packet(packet_t *packet)
  */
 static void welcome(packet_t *packet)
 {
-    printf("Client: Received a welcome packet.\n");
+    printf("Client: Received a WELCOME packet.\n");
 
-    send_welcome_received();
+    int16_t client_id;
+    read_int16(packet, &client_id);
+
+    send_welcome_received(client_id);
 }
 
 /**
@@ -52,5 +59,6 @@ static void welcome(packet_t *packet)
  */
 static void spawn_player(packet_t *packet)
 {
+
     printf("Spawning a player.\n");
 }

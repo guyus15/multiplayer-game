@@ -28,6 +28,8 @@ void send_welcome_message(int to_client)
     packet_t *welcome_packet = create_packet();
     set_packet_type(welcome_packet, WELCOME);
 
+    write_int16(welcome_packet, to_client);
+
     send_data(to_client, welcome_packet);
 }
 

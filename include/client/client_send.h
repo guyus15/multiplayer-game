@@ -8,8 +8,9 @@
 #define CLIENT_SEND_H
 
 #include <stddef.h>
+#include <stdint.h>
 
-void send_welcome_received();
+void send_welcome_received(int16_t received_id);
 void send_player_input(char *inputs, size_t size);
 
 #endif

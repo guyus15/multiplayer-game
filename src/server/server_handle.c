@@ -64,6 +64,14 @@ static void welcome_received(int from_client, packet_t *packet)
 {
     printf("Server: WELCOME_MESSAGE_RECEIVED packet received from client %d\n", from_client);
 
+    int16_t received_id;
+    read_int16(packet, &received_id);
+
+    if (from_client != received_id)
+    {
+        fprintf(stderr, "Server: Client %d assumed the wrong ID.\n", from_client);
+    }
+
     char player_name[30];
 
     char current;
@@ -90,19 +98,9 @@ static void player_input(int from_client, packet_t *packet)
     memset(inputs, 0, INPUT_SIZE);
 
     char current;
-    printf("Current: ");
     for (int i = 0; i < INPUT_SIZE; i++)
     {
         read_byte(packet, &current);
-        printf("%d", current);
         inputs[i] = current;
-    }
-    printf("\n");
-
-    int is_input = 0;
-
-    if (is_input)
-    {
-        printf("\n");
     }
 }
