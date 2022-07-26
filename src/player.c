@@ -7,6 +7,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * Create a player object.
+ * 
+ * @return player_t* A pointer to the created player.
+ */
 player_t *create_player()
 {
     player_t *player = (player_t *) malloc(sizeof(player_t));
