@@ -5,11 +5,8 @@
 
 #include <client/client_handle.h>
 #include <client/client_send.h>
-#include <client/client.h>
 #include <stdio.h>
-
-extern client_t local_client;
-extern client_t clients[7];
+#include <stdlib.h>
 
 // Forward declarations
 static void welcome(packet_t *packet);
@@ -49,6 +46,9 @@ static void welcome(packet_t *packet)
     int16_t client_id;
     read_int16(packet, &client_id);
 
+    // Register the local player
+    local_player.id = client_id;
+
     send_welcome_received(client_id);
 }
 
@@ -59,6 +59,43 @@ static void welcome(packet_t *packet)
  */
 static void spawn_player(packet_t *packet)
 {
+    int16_t player_id;
+    read_int16(packet, &player_id);
 
-    printf("Spawning a player.\n");
+    printf("Client: Received a SPAWN_PLAYER packet. Client ID: %d\n", player_id);
+
+    if (player_id == local_player.id)
+    {
+        // Spawning the local player.
+        printf("Client: Spawning local player.\n");
+
+        // TODO: Position the player in the world.
+
+    } else
+    {
+        // Spawning another client.
+
+        player_size++;
+
+        if (players == NULL)
+        {
+            // No clients currently exist, so allocate memory.
+            players = (player_t *) malloc(sizeof(player_t));
+        } else
+        {
+            // Clients already exist, so reallocate memory.
+            players = (player_t *) realloc(players, player_size * sizeof(player_t));
+        }
+
+        players[player_size - 1].id = player_id;
+    }
+
+    printf("- Local player -\nid: %d\n", local_player.id);
+
+    printf("\n- Players -\n");
+    for (int i = 0; i < player_size; i++)
+    {
+        printf("Player: %d\n", players[i].id);
+    }
+    printf("\n");
 }

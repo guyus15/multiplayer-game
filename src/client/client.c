@@ -23,8 +23,9 @@
 
 GLFWwindow *context;
 
-client_t local_client;
-client_t clients[7];
+player_t local_player;
+player_t *players;
+int player_size;
 
 int main(int argc, char *argv[])
 {

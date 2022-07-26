@@ -187,7 +187,8 @@ void send_into_game(int client_id, const char *player_name)
     printf("Server: Sending player '%s' into the game\n", player_name);
 
     // Create a player
-    clients[client_id].player = create_player();  
+    clients[client_id].player = create_player();
+    clients[client_id].player->id = client_id;   
 
     // Check all other clients for players and spawn them locally.
     

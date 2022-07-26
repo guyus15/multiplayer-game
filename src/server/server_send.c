@@ -43,7 +43,7 @@ void send_spawn_player_message(int to_client, player_t *player)
     packet_t *spawn_packet = create_packet();
     set_packet_type(spawn_packet, SPAWN_PLAYER);
 
-    
+    write_int16(spawn_packet, player->id);
 
     send_data(to_client, spawn_packet);
 }
