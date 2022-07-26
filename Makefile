@@ -6,6 +6,8 @@ TEST_BIN = tests/bin
 DOCS = docs
 DOC_CONFIG = doxygen.config
 
+OPTIONS = -Wall -Wpedantic -Werror
+
 libs:
 	cd lib/unitc && make build
 
@@ -22,10 +24,12 @@ docs:
 	lib/doxygen/bin/doxygen $(DOC_CONFIG)
 
 server: dirs
-	$(CC) src/packet.c src/input.c  src/player.c src/server/*.c -o $(BIN)/server -I include/ -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm
+	$(CC) src/*.c src/server/*.c -o $(BIN)/server -I include/ -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm $(OPTIONS)
 
 client: dirs
-	$(CC) src/*.c src/glad/glad.c src/client/*.c -o $(BIN)/client -I include/ -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm
+	$(CC) src/glad/glad.c -c -I include/
+	$(CC) src/*.c src/client/*.c glad.o -o $(BIN)/client -I include/ -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm $(OPTIONS)
+	rm glad.o
 
 clean:
 	rm -rf $(BIN) $(TEST_BIN) $(DOCS)
