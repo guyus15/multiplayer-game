@@ -154,8 +154,6 @@ int write_float(packet_t *packet, float value)
     }
 
     packet->size += FLOATSIZE;
-    
-    char buffer[FLOATSIZE];
 
     memcpy(packet->buffer + packet->size - FLOATSIZE, &value, FLOATSIZE);
 
