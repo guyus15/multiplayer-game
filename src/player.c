@@ -11,6 +11,8 @@ player_t *create_player()
 {
     player_t *player = (player_t *) malloc(sizeof(player_t));
     
+    // Zero all values.
+    player->id = 0;
     memset(player->username, 0, sizeof(player->username));
 
     return player;
