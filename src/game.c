@@ -11,6 +11,7 @@
 #include <string.h>
 #include <client/client.h>
 #include <client/client_send.h>
+#include <client/client_handle.h>
 #include <input.h>
 
 #define SCREEN_WIDTH 1280
@@ -78,10 +79,9 @@ void update()
 
     if (should_send_input)
     {
-        printf("Sending input packet!\n");
         char inputs[INPUT_SIZE];
         handle_input(context, inputs);
-        send_player_input(inputs, INPUT_SIZE);
+        send_player_input(&local_player, inputs, INPUT_SIZE);
     }
 }
 

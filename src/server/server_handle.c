@@ -97,10 +97,15 @@ static void player_input(int from_client, packet_t *packet)
     char inputs[INPUT_SIZE];
     memset(inputs, 0, INPUT_SIZE);
 
+    int player_id;
+    read_int32(packet, &player_id);
+
     char current;
     for (int i = 0; i < INPUT_SIZE; i++)
     {
         read_byte(packet, &current);
         inputs[i] = current;
     }
+
+    move_player(clients[player_id].player, inputs);
 }

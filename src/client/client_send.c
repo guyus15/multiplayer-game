@@ -43,10 +43,12 @@ void send_welcome_received(int16_t received_id)
  * @param inputs A boolean array of inputs. 
  * @param size  The size of the array of inputs.
  */
-void send_player_input(char *inputs, size_t size)
+void send_player_input(player_t *player, char *inputs, size_t size)
 {
     packet_t *packet = create_packet();
     set_packet_type(packet, PLAYER_INPUT);
+
+    write_int32(packet, player->id);
 
     for (int i = 0; i < size; i++)
     {

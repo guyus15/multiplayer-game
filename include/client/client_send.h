@@ -7,10 +7,11 @@
 #ifndef CLIENT_SEND_H
 #define CLIENT_SEND_H
 
+#include <player.h>
 #include <stddef.h>
 #include <stdint.h>
 
 void send_welcome_received(int16_t received_id);
-void send_player_input(char *inputs, size_t size);
+void send_player_input(player_t *player, char *inputs, size_t size);
 
 #endif

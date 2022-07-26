@@ -15,8 +15,8 @@ client_t clients[MAXCLIENTS];
 
 // Forward declarations
 static void send_data(int to_client, packet_t *packet);
-static void send_data_to_all(packet_t *packet);
-static void send_data_to_all_except(int except_client, packet_t *packet);
+//static void send_data_to_all(packet_t *packet);
+//static void send_data_to_all_except(int except_client, packet_t *packet);
 
 /**
  * Sends a welcome packet to a specific client.
@@ -77,11 +77,11 @@ static void send_data(int to_client, packet_t *packet)
     }
 }
 
-/**
+/*
  * Sends a given packet to every connected client.
  * 
  * @param packet A pointer to the packet to send.
- */
+ 
 static void send_data_to_all(packet_t *packet)
 {
     int sockfd;
@@ -103,13 +103,14 @@ static void send_data_to_all(packet_t *packet)
     }
 }
 
-/**
+
+**
  * Sends a given packet to every connected client except
  * the client associated with the ID of except_client.
  * 
  * @param except_client The client to exclude from the sending of data.
  * @param packet A pointer to the packet to send.
- */
+ *
 static void send_data_to_all_except(int except_client, packet_t *packet)
 {
     int id, sockfd;
@@ -131,3 +132,4 @@ static void send_data_to_all_except(int except_client, packet_t *packet)
         }
     }
 }
+*/

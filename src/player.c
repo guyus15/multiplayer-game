@@ -7,6 +7,7 @@
 #include <input.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 /**
  * Create a player object.
@@ -20,29 +21,35 @@ player_t *create_player()
     // Zero all values.
     player->id = 0;
     memset(player->username, 0, sizeof(player->username));
+    memset(player->position, 0, sizeof(vec2));
+    memset(player->velocity, 0, sizeof(vec2));
 
     return player;
 }
 
 /**
- * Moves the player in a direction based on the given inputs.
+ * Moves a player in a direction based on the given inputs.
  * 
+ * @param *player_t The player to move.
  * @param inputs The client side inputs which have been sent to the server.
  */
-void move_player(char *inputs)
+void move_player(player_t *player, char *inputs)
 {
     if (inputs[INPUT_W] || inputs[INPUT_SPACE])
     {
         // Jump
+        printf("Player %d should be Jumping!\n", player->id);
     }
 
     if (inputs[INPUT_A])
     {
         // Move left
+        printf("Player %d should be Moving Left!\n", player->id);
     }
 
     if (inputs[INPUT_D])
     {
         // Move right
+        printf("Player %d should be Moving Right!\n", player->id);
     }
 }
