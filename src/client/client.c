@@ -27,6 +27,8 @@ player_t local_player;
 player_t *players;
 int player_size;
 
+int should_send_input = FALSE;
+
 int main(int argc, char *argv[])
 {
     if (argc != 3)

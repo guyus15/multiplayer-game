@@ -7,6 +7,10 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#define TRUE 1
+#define FALSE 0
+
 extern int sockfd;
+extern int should_send_input;
 
 #endif

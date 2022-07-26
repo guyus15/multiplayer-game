@@ -5,6 +5,7 @@
 
 #include <client/client_handle.h>
 #include <client/client_send.h>
+#include <client/client.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -89,4 +90,7 @@ static void spawn_player(packet_t *packet)
 
         players[player_size - 1].id = player_id;
     }
+
+    // Allow the client to start sending input packets.
+    should_send_input = TRUE;
 }

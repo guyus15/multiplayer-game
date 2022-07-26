@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <client/client.h>
 #include <client/client_send.h>
 #include <input.h>
 
@@ -74,9 +75,14 @@ void update()
     glfwPollEvents();
 
     // Get player input and send to the server.
-    char inputs[INPUT_SIZE];
-    handle_input(context, inputs);
-    send_player_input(inputs, INPUT_SIZE);
+
+    if (should_send_input)
+    {
+        printf("Sending input packet!\n");
+        char inputs[INPUT_SIZE];
+        handle_input(context, inputs);
+        send_player_input(inputs, INPUT_SIZE);
+    }
 }
 
 /**
