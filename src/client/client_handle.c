@@ -89,13 +89,4 @@ static void spawn_player(packet_t *packet)
 
         players[player_size - 1].id = player_id;
     }
-
-    printf("- Local player -\nid: %d\n", local_player.id);
-
-    printf("\n- Players -\n");
-    for (int i = 0; i < player_size; i++)
-    {
-        printf("Player: %d\n", players[i].id);
-    }
-    printf("\n");
 }
