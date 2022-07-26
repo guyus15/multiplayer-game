@@ -11,4 +11,6 @@ typedef struct player_type
 
 player_t *create_player();
 
+void move_player(char *inputs);
+
 #endif

@@ -4,6 +4,7 @@
  */
 
 #include <player.h>
+#include <input.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -21,4 +22,27 @@ player_t *create_player()
     memset(player->username, 0, sizeof(player->username));
 
     return player;
+}
+
+/**
+ * Moves the player in a direction based on the given inputs.
+ * 
+ * @param inputs The client side inputs which have been sent to the server.
+ */
+void move_player(char *inputs)
+{
+    if (inputs[INPUT_W] || inputs[INPUT_SPACE])
+    {
+        // Jump
+    }
+
+    if (inputs[INPUT_A])
+    {
+        // Move left
+    }
+
+    if (inputs[INPUT_D])
+    {
+        // Move right
+    }
 }
