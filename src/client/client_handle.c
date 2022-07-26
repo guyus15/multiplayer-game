@@ -72,6 +72,10 @@ static void spawn_player(packet_t *packet)
 
         // TODO: Position the player in the world.
 
+
+        // Allow the client to start sending input packets.
+        should_send_input = TRUE;
+        
     } else
     {
         // Spawning another client.
@@ -90,7 +94,4 @@ static void spawn_player(packet_t *packet)
 
         players[player_size - 1].id = player_id;
     }
-
-    // Allow the client to start sending input packets.
-    should_send_input = TRUE;
 }
