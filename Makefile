@@ -8,6 +8,8 @@ DOC_CONFIG = doxygen.config
 
 OPTIONS = -Wall -Wpedantic -Werror
 
+SERVER_OBJS = src/player.c src/packet.c src/input.c src/server/*.c
+
 GLFW = -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm
 CGLM = -I lib/cglm/include/ -L lib/cglm/build/ -lcglm
 
@@ -28,7 +30,7 @@ docs:
 	lib/doxygen/bin/doxygen $(DOC_CONFIG)
 
 server: dirs
-	$(CC) src/*.c src/server/*.c -o $(BIN)/server -I include/ $(GLFW) $(CGLM) $(OPTIONS)
+	$(CC) $(SERVER_OBJS) -o $(BIN)/server -I include/ $(GLFW) $(CGLM) $(OPTIONS)
 
 client: dirs
 	$(CC) src/glad/glad.c -c -I include/
