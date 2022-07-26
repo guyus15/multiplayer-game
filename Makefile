@@ -8,8 +8,12 @@ DOC_CONFIG = doxygen.config
 
 OPTIONS = -Wall -Wpedantic -Werror
 
+GLFW = -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm
+CGLM = -I lib/cglm/include/ -L lib/cglm/build/ -lcglm
+
 libs:
 	cd lib/unitc && make build
+	cd lib/cglm && mkdir -p build && cd build && cmake .. && make 
 
 dirs:
 	mkdir -p ./$(BIN)
@@ -24,11 +28,11 @@ docs:
 	lib/doxygen/bin/doxygen $(DOC_CONFIG)
 
 server: dirs
-	$(CC) src/*.c src/server/*.c -o $(BIN)/server -I include/ -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm $(OPTIONS)
+	$(CC) src/*.c src/server/*.c -o $(BIN)/server -I include/ $(GLFW) $(CGLM) $(OPTIONS)
 
 client: dirs
 	$(CC) src/glad/glad.c -c -I include/
-	$(CC) src/*.c src/client/*.c glad.o -o $(BIN)/client -I include/ -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm $(OPTIONS)
+	$(CC) src/*.c src/client/*.c glad.o -o $(BIN)/client -I include/ $(GLFW) $(OPTIONS)
 	rm glad.o
 
 clean:
