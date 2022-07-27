@@ -56,6 +56,7 @@ void send_spawn_player_message(int to_client, player_t *player)
 void send_player_movement(player_t *player)
 {
     packet_t *packet = create_packet();
+    set_packet_type(packet, PLAYER_MOVEMENT);
 
     write_int32(packet, player->id);
     write_float(packet, player->position[0]);
