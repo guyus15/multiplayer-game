@@ -12,6 +12,7 @@
 // Forward declarations
 static void welcome(packet_t *packet);
 static void spawn_player(packet_t *packet);
+static void player_movement(packet_t *packet);
 
 /**
  * Handles an incoming packet by calling an associated function.
@@ -29,6 +30,9 @@ void handle_packet(packet_t *packet)
             break;
         case SPAWN_PLAYER:
             spawn_player(packet);
+            break;
+        case PLAYER_MOVEMENT:
+            player_movement(packet);
             break;
         default:
             break;
@@ -94,4 +98,21 @@ static void spawn_player(packet_t *packet)
 
         players[player_size - 1].id = player_id;
     }
+}
+
+/**
+ * A function used to handle packets of type PLAYER_MOVEMENT.
+ * 
+ * @param packet A pointer to the received packet.
+ */
+static void player_movement(packet_t *packet)
+{
+    int id;
+    float x, y;
+
+    read_int32(packet, &id);
+    read_float(packet, &x);
+    read_float(packet, &y);
+
+    printf("Player %d: x: %f, y: %f\n", id, x, y);
 }
