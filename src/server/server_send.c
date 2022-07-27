@@ -15,7 +15,7 @@ client_t clients[MAXCLIENTS];
 
 // Forward declarations
 static void send_data(int to_client, packet_t *packet);
-//static void send_data_to_all(packet_t *packet);
+static void send_data_to_all(packet_t *packet);
 //static void send_data_to_all_except(int except_client, packet_t *packet);
 
 /**
@@ -49,6 +49,21 @@ void send_spawn_player_message(int to_client, player_t *player)
 }
 
 /**
+ * Sends a player movement packet to every client.
+ * 
+ * @param player A pointer to the player who's movement to send.
+ */
+void send_player_movement(player_t *player)
+{
+    packet_t *packet = create_packet();
+
+    write_float(packet, player->position[0]);
+    write_float(packet, player->position[1]);
+
+    send_data_to_all(packet);
+}
+
+/**
  * Sends a given packet to a specific client. 
  * 
  * @param to_client The ID of the target client.
@@ -77,11 +92,11 @@ static void send_data(int to_client, packet_t *packet)
     }
 }
 
-/*
+/**
  * Sends a given packet to every connected client.
  * 
  * @param packet A pointer to the packet to send.
- 
+ */
 static void send_data_to_all(packet_t *packet)
 {
     int sockfd;
@@ -103,7 +118,7 @@ static void send_data_to_all(packet_t *packet)
     }
 }
 
-
+/*
 **
  * Sends a given packet to every connected client except
  * the client associated with the ID of except_client.
