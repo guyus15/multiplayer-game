@@ -23,9 +23,6 @@ static void player_input(int from_client, packet_t *packet);
  */
 void handle_packet(int from_client, packet_t *packet)
 {
-    // TODO: Do some memory management after we're done with the packet.
-    // Otherwise everytime a packet is received, more memory will be used up.
-
     switch (packet->type)
     {
         case NONE:
@@ -41,6 +38,10 @@ void handle_packet(int from_client, packet_t *packet)
             do_nothing(from_client, packet);
             break;
     }
+
+    // Once packet has been handled, it is no longer needed, so it can 
+    // be freed.
+    free(packet);
 }
 
 /**
