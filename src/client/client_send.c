@@ -64,4 +64,7 @@ static void send_data(packet_t *packet)
     {
         perror("send");
     }
+
+    // Once done sending, the packet can be freed.
+    free(packet);
 }
