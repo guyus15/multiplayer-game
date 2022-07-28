@@ -7,10 +7,16 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include <player.h>
+
 #define TRUE 1
 #define FALSE 0
 
 extern int sockfd;
 extern int should_send_input;
+
+extern player_t local_player;
+extern player_t *players;
+extern int player_size;
 
 #endif

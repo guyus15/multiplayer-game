@@ -76,7 +76,6 @@ void update()
     glfwPollEvents();
 
     // Get player input and send to the server.
-
     if (should_send_input)
     {
         char inputs[INPUT_SIZE];
