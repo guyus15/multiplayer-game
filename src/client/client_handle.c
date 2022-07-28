@@ -37,6 +37,10 @@ void handle_packet(packet_t *packet)
         default:
             break;
     }
+
+    // Once packet has been handled, it is no longer needed, so it can 
+    // be freed.
+    free(packet);
 }
 
 /**
