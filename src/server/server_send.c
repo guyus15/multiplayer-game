@@ -92,6 +92,9 @@ static void send_data(int to_client, packet_t *packet)
     {
         perror("send");
     }
+
+    // Once done sending, the packet can be freed.
+    free(packet);
 }
 
 /**
@@ -118,6 +121,9 @@ static void send_data_to_all(packet_t *packet)
             continue;
         }
     }
+
+    // Once done sending, the packet can be freed.
+    free(packet);
 }
 
 /*
