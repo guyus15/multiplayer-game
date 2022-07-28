@@ -38,22 +38,19 @@ void move_player(player_t *player, char *inputs)
     if (inputs[INPUT_W] || inputs[INPUT_SPACE])
     {
         // Jump
-        printf("Player %d should be Jumping!\n", player->id);
         player->position[1] += 10; // Temporary jump height
     }
 
     if (inputs[INPUT_A])
     {
         // Move left
-        printf("Player %d should be Moving Left!\n", player->id);
-        player->position[0] += 1; // Temporary move speed
+        player->position[0] -= 1; // Temporary move speed
     }
 
     if (inputs[INPUT_D])
     {
         // Move right
-        printf("Player %d should be Moving Right!\n", player->id);
-        player->position[0] -= 1; // Temporary move speed
+        player->position[0] += 1; // Temporary move speed
     }
     
     // TODO: replace direct position manipulation with velocity

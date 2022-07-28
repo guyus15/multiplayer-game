@@ -10,7 +10,7 @@ OPTIONS = -Wall -Wpedantic -Werror
 
 SERVER_OBJS = src/player.c src/packet.c src/input.c src/server/*.c
 
-GLFW = -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm
+GLFW = -I lib/glfw/include/ -L lib/glfw/build/src -lglfw3 -lm -ldl -pthread
 CGLM = -I lib/cglm/include/ -L lib/cglm/build/ -lcglm
 
 libs:

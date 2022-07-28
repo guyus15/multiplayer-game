@@ -11,5 +11,6 @@
 
 void send_welcome_message(int to_client);
 void send_spawn_player_message(int to_client, player_t *player);
+void send_player_movement(player_t *player);
 
 #endif

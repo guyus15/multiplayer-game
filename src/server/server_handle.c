@@ -4,6 +4,7 @@
  */
 
 #include <server/server_handle.h>
+#include <server/server_send.h>
 #include <server/server.h>
 #include <stdio.h>
 #include <string.h>
@@ -108,4 +109,6 @@ static void player_input(int from_client, packet_t *packet)
     }
 
     move_player(clients[player_id].player, inputs);
+
+    send_player_movement(clients[player_id].player);
 }
