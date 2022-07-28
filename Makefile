@@ -15,7 +15,9 @@ CGLM = -I lib/cglm/include/ -L lib/cglm/build/ -lcglm
 
 libs:
 	cd lib/unitc && make build
-	cd lib/cglm && mkdir -p build && cd build && cmake .. && make 
+	cd lib/cglm && mkdir -p build && cd build && cmake .. && make
+	cd lib/doxygen && cmake -G "Unix Makefiles"
+	cd lib/doxygen && make
 
 dirs:
 	mkdir -p ./$(BIN)
@@ -25,8 +27,6 @@ test: libs
 	$(CC) src/packet.c tests/packet_test.c -o $(TEST_BIN)/packet_test -L lib/unitc/lib -lunitc -I include/ -I lib/unitc/include/
 
 docs:
-	cd lib/doxygen && cmake -G "Unix Makefiles"
-	cd lib/doxygen && make
 	lib/doxygen/bin/doxygen $(DOC_CONFIG)
 
 server: dirs
