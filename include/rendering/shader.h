@@ -6,7 +6,7 @@
 
 typedef struct shader_type
 {
-    unsigned int;
+    unsigned int id;
 } shader_t;
 
 void compile_shader(shader_t *shader,
