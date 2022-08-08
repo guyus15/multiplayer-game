@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAX_SOURCE_LENGTH 1024
 #define INFO_LOG_LENGTH 512
 
 void compile_shader(shader_t *shader,
