@@ -1,3 +1,8 @@
+/**
+ * @file debug.h
+ * @brief Provides functions to provide debugging facilities to the application.
+ */
+
 #ifndef DEBUG_H
 #define DEBUG_H
 

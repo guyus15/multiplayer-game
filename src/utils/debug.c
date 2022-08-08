@@ -1,7 +1,20 @@
+/**
+ * @file debug.c
+ * @brief Provides functions to provide debugging facilities to the application.
+ */
+
 #include <utils/debug.h>
 #include <stdio.h>
 #include <string.h>
 
+/**
+ * Prints a string corresponding to an error code and returns
+ * the error code.
+ * 
+ * @param file The name of the file to print in the output.
+ * @param line The line number of to display in the output.
+ * @return GLenum The error code.
+ */
 GLenum gl_check_enum_(const char *file, int line)
 {
     GLenum error_code;
