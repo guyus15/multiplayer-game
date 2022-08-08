@@ -34,7 +34,7 @@ server: dirs
 
 client: dirs
 	$(CC) src/glad/glad.c -c -I include/
-	$(CC) src/*.c src/client/*.c src/rendering/*.c glad.o -o $(BIN)/client -I include/ $(GLFW) $(CGLM) $(OPTIONS)
+	$(CC) src/*.c src/client/*.c src/rendering/*.c src/utils/*.c glad.o -o $(BIN)/client -I include/ $(GLFW) $(CGLM) $(OPTIONS)
 	rm glad.o
 
 clean:
