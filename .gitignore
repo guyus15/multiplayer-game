@@ -65,14 +65,17 @@ src/*
 !src/server
 !src/client
 !src/rendering
+!src/utils
 !src/glad
 src/server/*
 src/client/*
+src/utils/*
 src/glad/*
 !src/*.c
 !src/server/*.c
 !src/client/*.c
 !src/rendering/*.c
+!src/utils/*.c
 !src/glad/*.c
 
 # .vscode Directory
