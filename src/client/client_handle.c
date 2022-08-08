@@ -69,7 +69,11 @@ static void welcome(packet_t *packet)
 static void spawn_player(packet_t *packet)
 {
     int16_t player_id;
+    float x_pos, y_pos;
+
     read_int16(packet, &player_id);
+    read_float(packet, &x_pos);
+    read_float(packet, &y_pos);
 
     printf("Client: Received a SPAWN_PLAYER packet. Client ID: %d\n", player_id);
 
@@ -78,8 +82,9 @@ static void spawn_player(packet_t *packet)
         // Spawning the local player.
         printf("Client: Spawning local player.\n");
 
-        // TODO: Position the player in the world.
-
+        local_player.id = player_id;
+        local_player.position[0] = x_pos;
+        local_player.position[1] = y_pos;
 
         // Allow the client to start sending input packets.
         should_send_input = TRUE;
@@ -100,7 +105,10 @@ static void spawn_player(packet_t *packet)
             players = (player_t *) realloc(players, player_size * sizeof(player_t));
         }
 
-        players[player_size - 1].id = player_id;
+        player_t *new_player = &players[player_size - 1];
+        new_player->id = player_id;
+        new_player->position[0] = x_pos;
+        new_player->position[1] = y_pos;
     }
 }
 
