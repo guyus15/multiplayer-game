@@ -44,6 +44,8 @@ void send_spawn_player_message(int to_client, player_t *player)
     set_packet_type(spawn_packet, SPAWN_PLAYER);
 
     write_int16(spawn_packet, player->id);
+    write_float(spawn_packet, 640.0);
+    write_float(spawn_packet, 360.0);
 
     send_data(to_client, spawn_packet);
 }
