@@ -22,3 +22,39 @@ texture_t *create_texture()
 
     return texture;
 }
+
+void generate(texture_t *texture,
+              unsigned int width,
+              unsigned int height,
+              unsigned char *data)
+{
+    texture->width = width;
+    texture->height = height;
+
+    // Bind texture
+    glGenTextures(1, &(texture->id));
+    glBindTexture(GL_TEXTURE_2D, texture->id);
+
+    glTexImage2D(GL_TEXTURE_2D, 0,
+                 texture->internal_format,
+                 texture->width,
+                 texture->height,
+                 0,
+                 texture->image_format,
+                 GL_UNSIGNED_BYTE,
+                 data);
+
+    // Texture parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, texture->wrap_s);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, texture->wrap_t);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texture->filter_min);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture->filter_max);
+
+    // Unbind texture
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void bind(texture_t *texture)
+{
+    glBindTexture(GL_TEXTURE_2D, texture->id);
+}

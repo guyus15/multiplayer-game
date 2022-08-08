@@ -21,6 +21,6 @@ typedef struct texture_type
 texture_t *create_texture();
 
 void generate(texture_t *texture, unsigned int width, unsigned int height, unsigned char *data);
-void bind;
+void bind(texture_t *texture);
 
 #endif 
